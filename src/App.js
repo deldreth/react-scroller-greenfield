@@ -1,45 +1,45 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 
-import { decay, listen, pointer, transform, value } from "popmotion";
+import { decay, listen, pointer, transform, value } from 'popmotion';
 
 const innerStyle = {
   width: 2000,
   height: 100,
   background:
-    "linear-gradient(to right, orange , yellow, green, cyan, blue, violet)"
+    'linear-gradient(to right, orange , yellow, green, cyan, blue, violet)',
 };
 
 const buttonStyle = {
   width: 100,
   zIndex: 10,
-  position: "absolute",
+  position: 'absolute',
   top: 0,
-  bottom: 0
+  bottom: 0,
 };
 
 const leftButton = {
   ...buttonStyle,
   left: 0,
-  background: "linear-gradient(to right, #ffffff, transparent)"
+  background: 'linear-gradient(to right, #ffffff, transparent)',
 };
 
 const rightButton = {
   ...buttonStyle,
   right: 0,
-  textAlign: "right",
-  background: "linear-gradient(to right, transparent, #ffffff)"
+  textAlign: 'right',
+  background: 'linear-gradient(to right, transparent, #ffffff)',
 };
 
 export default class App extends Component {
   state = {
-    childrenWidth: 0
+    childrenWidth: 0,
   };
 
   scrollOffsetInitial = 0;
   listX = value(0, value => {
     if (this.list && this.list.current) {
       this.list.current.scrollTo({
-        left: value
+        left: value,
       });
       this.scrollOffsetInitial = value;
     }
@@ -56,7 +56,7 @@ export default class App extends Component {
 
     this.setState({ childrenWidth: width });
 
-    listen(this.list.current, "mousedown touchstart").start(() => {
+    listen(this.list.current, 'mousedown touchstart').start(() => {
       pointer({ x: -this.scrollOffsetInitial })
         .pipe(
           ({ x }) => -x,
@@ -65,10 +65,10 @@ export default class App extends Component {
         .start(this.listX);
     });
 
-    listen(this.list.current, "mouseup touchend").start(() => {
+    listen(this.list.current, 'mouseup touchend').start(() => {
       decay({
         from: this.listX.get(),
-        velocity: this.listX.getVelocity() * 0.1
+        velocity: this.listX.getVelocity() * 0.1,
       })
         .pipe(this.clampMovement)
         .start(this.listX);
@@ -80,7 +80,7 @@ export default class App extends Component {
   handleScroll = event => {
     this.scrollOffsetInitial = this.list.current.scrollLeft;
     this.list.current.scrollTo({
-      left: this.list.current.scrollLeft
+      left: this.list.current.scrollLeft,
     });
 
     this.forceUpdate();
@@ -107,7 +107,11 @@ export default class App extends Component {
 
   render() {
     if (this.list.current) {
-      console.log(this.list.current.scrollLeft, this.state.childrenWidth, this.list.current.clientWidth);
+      console.log(
+        this.list.current.scrollLeft,
+        this.state.childrenWidth,
+        this.list.current.clientWidth
+      );
     }
 
     return (
@@ -118,16 +122,18 @@ export default class App extends Component {
           </Button>
         )}
 
-        {this.list.current && this.list.current.scrollLeft + this.list.current.clientWidth !== this.state.childrenWidth && (
-          <Button style={rightButton} onClick={this.onNext}>
-            Right
-          </Button>
-        )}
+        {this.list.current &&
+          this.list.current.scrollLeft + this.list.current.clientWidth !==
+            this.state.childrenWidth && (
+            <Button style={rightButton} onClick={this.onNext}>
+              Right
+            </Button>
+          )}
 
         <div
           ref={this.list}
           onScroll={this.handleScroll}
-          style={{ overflow: "hidden" }}
+          style={{ overflow: 'hidden' }}
         >
           <div style={innerStyle} />
         </div>
